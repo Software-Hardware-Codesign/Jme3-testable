@@ -130,7 +130,9 @@ public class Launcher {
             TAG_ALL
     };
 
-    public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException {
+    public static void main(String[] args) throws InstantiationException, IllegalAccessException,
+                                                  ClassNotFoundException, NoSuchMethodException,
+                                                  InvocationTargetException {
         final AppSettings settings = new AppSettings(true);
         settings.setRenderer(AppSettings.LWJGL_OPENGL2);
         settings.setAudioRenderer(AppSettings.LWJGL_OPENAL);
