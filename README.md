@@ -2,11 +2,11 @@
 
 This is an initial  implementation for the testable api, targeting issue #1649, which suggests building a better test chooser backend for jme3-examples, where one can pickup which test cases to run inside a package.
 
-This is a video demonstrating testables in action : 
+This is a video demonstrating testables in action: 
 
 [![Video](https://user-images.githubusercontent.com/60224159/170361202-c6c75a54-4197-446a-a653-fbe2fb2b7e7d.jpg)](https://www.youtube.com/watch?v=u9biai9Yg38)
 
-FAQ: 
+## F.A.Q: 
 
 **How can I make my own test?**: 
 A: Your test should `extends JmeTestApp` or `JmeTestState`, in either cases, you will override `launch()` method and add what you want to test there, whether a `JmeApplication.attachState(this); for AppStates` or `setting up AppSettings and start()` or `setting up a JmeSurfaceView for android`. 
@@ -50,8 +50,7 @@ A: The utility will exclude this test, because how should it know 'is it ready t
  
 I think that is it, for now, if that is what you are seeking, then i hope it will be helpful, please give a quick review.
 
-EDIT: 
-An example: 
+## Examples:
 1) The Testable class : 
 ```java
 /*
