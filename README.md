@@ -19,12 +19,14 @@ METHOD-A :
 ```
 METHOD-B : 
 ```java
- TestableExecutor.getInstance().launch(Main.class.getPackage().getName(), "--No-Data--", tags);
+ TestableExecutor.getInstance().launch(Main.class.getPackage().getName(),
+                                       "--No-Data--", tags);
 ```
 **Can I test multiple packages that aren't on the same tree, at the same time?**
 A: Yep, just use : 
 ```java
-TestableExecutor.getInstance().launch(new String[] {"jme3test.app", "jme3test.animation"}, "--No-Data--", tags);
+TestableExecutor.getInstance().launch(new String[] {"jme3test.app", "jme3test.animation"},
+                                     "--No-Data--", tags);
 ```
 **Can I use multiple tags in the same `@TestableTags` annoation?**
 A: Yep, use this: 
