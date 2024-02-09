@@ -1,0 +1,2 @@
+rootProject.name = 'Jme3-testable'
+include('jme3-testable')

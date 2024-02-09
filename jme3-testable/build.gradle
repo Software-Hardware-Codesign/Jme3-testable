@@ -1,0 +1,14 @@
+plugins {
+    // Apply the java-library plugin for API and implementation separation.
+    id 'java-library'
+}
+
+repositories {
+    // Use Maven Central for resolving dependencies.
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation "org.jmonkeyengine:jme3-core:3.6.1-stable"
+}
