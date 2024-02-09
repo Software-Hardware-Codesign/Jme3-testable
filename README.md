@@ -1,6 +1,6 @@
 # Jme3-testable API
 
-This is an initial  implementation for the testable api, targeting issue #1649, which suggests building a better test chooser backend for jme3-examples, where one can pickup which test cases to run inside a package.
+This is an initial  implementation for the testable api, targeting issue [jmonkeyengine#1649](https://github.com/jMonkeyEngine/jmonkeyengine/issues/1649), which suggests building a better test chooser backend for jme3-examples, where one can pickup which test cases to run inside a package.
 
 This is a video demonstrating testables in action: 
 
@@ -15,37 +15,37 @@ A: Your test should `extends JmeTestApp` or `JmeTestState`, in either cases, you
 A; Yep, all you need to do, is to give the package, which can be done by 2 methods : 
 METHOD-A : 
 ```java
- TestableExecutor.execute("jme3test", "--No-Data--", signatures);
+ TestableExecutor.getInstance().launch("jme3test", "--No-Data--", tags);
 ```
 METHOD-B : 
 ```java
- TestableExecutor.execute(Main.class.getPackage().getName(), "--No-Data--", signatures);
+ TestableExecutor.getInstance().launch(Main.class.getPackage().getName(), "--No-Data--", tags);
 ```
-**Can i test multiple packages that aren't on the same tree, at the same time?**
+**Can I test multiple packages that aren't on the same tree, at the same time?**
 A: Yep, just use : 
 ```java
-TestableExecutor.execute(new String[] {"jme3test.app", "jme3test.animation"}, "--No-Data--", signatures);
+TestableExecutor.getInstance().launch(new String[] {"jme3test.app", "jme3test.animation"}, "--No-Data--", tags);
 ```
-**Can i use multiple signatures in the same `@Test` annoation?**
-A: Yep, use this : 
+**Can I use multiple tags in the same `@TestableTags` annoation?**
+A: Yep, use this: 
 ```java
-@Annotations.Test(signatures = {Launcher.SIG_WATER_FILTERS, Launcher.SIG_ALL})
+@TestableTags({Launcher.TAG_WATER_FILTERS, Launcher.TAG_ALL})
 ```
-But, no `@Test` repetition...it complicates simple stuff and not clean anyway.
+But, no `@TestableTags` repetition...it complicates simple stuff and not clean anyway.
 
-**What will happen if i have non-class files on my package**
+**What will happen if I have non-class files on my package**
 A: Don't worry, the utility skips those.
 
-**What will happen if i have other classes not implementing the Testable?** 
+**What will happen if I have other classes not implementing the Testable?** 
 A: Those are skipped too.
  
-**Can i use this on android?**
-A: Theoretically, you can, but i haven't found the time to test that yet.
+**Can I use this on android?**
+A: Theoretically, you can, but I haven't found the time to test that yet.
 
-**What will happen if i extended JmeTestApp and didn't add a `@Test` with a signature?**
-A: The utility will exclude this test, because how should it know 'is it ready to be executed?', if you want to run all Testables under a package then use a unified signature in all those classes, for example, add this to all the testables you want to run `Launcher.SIG_ALL` while you can still use other signatures to filter your tests for other run configurations : 
+**What will happen if I extended JmeTestApp and didn't add a `@TestableTags` with a signature?**
+A: The utility will exclude this test, because how should it know 'is it ready to be executed?', if you want to run all Testables under a package then use a unified tag in all those classes, for example, add this to all the testables you want to run `Launcher.TAG_ALL` while you can still use other tags to filter your tests for other run configurations: 
 ```java
-@Annotations.Test(signatures = {Launcher.SIG_WATER_FILTERS, Launcher.SIG_ALL})
+@TestableTags({Launcher.TAG_WATER_FILTERS, Launcher.TAG_ALL})
 ``` 
  
 I think that is it, for now, if that is what you are seeking, then i hope it will be helpful, please give a quick review.
@@ -53,51 +53,19 @@ I think that is it, for now, if that is what you are seeking, then i hope it wil
 ## Examples:
 1) The Testable class : 
 ```java
-/*
- * Copyright (c) 2009-2021 jMonkeyEngine
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are
- * met:
- *
- * * Redistributions of source code must retain the above copyright
- *   notice, this list of conditions and the following disclaimer.
- *
- * * Redistributions in binary form must reproduce the above copyright
- *   notice, this list of conditions and the following disclaimer in the
- *   documentation and/or other materials provided with the distribution.
- *
- * * Neither the name of 'jMonkeyEngine' nor the names of its contributors
- *   may be used to endorse or promote products derived from this software
- *   without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
- * TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
- 
 package jme3test.app.test;
 
 import com.jme3.system.AppSettings;
-import com.jme3.testable.impl.JmeAppTest;
+import com.avrsandbox.jme3.testable.app.JmeAppTest;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Box;
-import com.jme3.system.Annotations;
+import com.avrsandbox.jme3.testable.TestableTags;
 import jme3test.Launcher;
 
 /**
  * Test a bare-bones application, without SimpleApplication.
  */
-@Annotations.TestableTags({Launcher.SIG_ALL})
+@TestableTags({Launcher.TAG_ALL})
 public class BareBonesAppTest extends JmeAppTest<AppSettings> {
 
     private Geometry boxGeom;
@@ -118,7 +86,6 @@ public class BareBonesAppTest extends JmeAppTest<AppSettings> {
 
     @Override
     public void simpleInitApp() {
-
         // create a box
         boxGeom = new Geometry("Box", new Box(2, 2, 2));
 
@@ -144,7 +111,7 @@ public class BareBonesAppTest extends JmeAppTest<AppSettings> {
 package jme3test;
 
 import com.jme3.system.AppSettings;
-import com.jme3.util.TestableExecutor;
+import com.avrsandbox.testable.util.TestableExecutor;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -153,19 +120,19 @@ import java.lang.reflect.InvocationTargetException;
  * @author pavl_g.
  */
 public class Launcher {
-    public static final String SIG_ALL = "ALL";
-    public static final String SIG_WATER_FILTERS = "WATER-FILTER";
-    public static final String PBR = "PBR";
+    public static final String TAG_ALL = "ALL";
+    public static final String TAG_WATER_FILTERS = "WATER-FILTER";
+    public static final String TAG_PBR = "PBR";
 
-    public static final String[] signatures = new String[] {
-            SIG_ALL
+    public static final String[] tags = new String[] {
+            TAG_ALL
     };
 
     public static void main(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException {
         final AppSettings settings = new AppSettings(true);
         settings.setRenderer(AppSettings.LWJGL_OPENGL2);
         settings.setAudioRenderer(AppSettings.LWJGL_OPENAL);
-        TestableExecutor.getInstance().launch(new String[] {"jme3test"}, settings, signatures);
+        TestableExecutor.getInstance().launch(new String[] {"jme3test"}, settings, tags);
     }
 }
 ```
